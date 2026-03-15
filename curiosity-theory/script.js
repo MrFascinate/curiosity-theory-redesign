@@ -132,10 +132,10 @@
 
   const EPISODE_COUNT = 8;
   // Use the API proxy on Vercel, fall back to a CORS proxy for local dev
-  const RSS_URL = 'https://www.curiositytheorypod.com/episodes?format=rss';
+  const YT_FEED = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCxFN5wHxJ7oig9TF9oadaug';
   const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
   const FEED_URL = isLocal
-    ? 'https://api.allorigins.win/raw?url=' + encodeURIComponent(RSS_URL)
+    ? 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YT_FEED)
     : '/api/feed';
 
   try {
@@ -145,25 +145,28 @@
     const xml = await res.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(xml, 'application/xml');
-    const items = doc.querySelectorAll('item');
+    const entries = doc.querySelectorAll('entry');
 
-    if (items.length === 0) throw new Error('No episodes found');
+    if (entries.length === 0) throw new Error('No episodes found');
 
-    const episodes = Array.from(items).slice(0, EPISODE_COUNT).map((item, i) => {
-      const title = item.querySelector('title')?.textContent || 'Untitled';
-      const link = item.querySelector('link')?.textContent || '#';
-      const pubDate = item.querySelector('pubDate')?.textContent || '';
-      const mediaEl = item.querySelector('content');
-      const thumbnail = mediaEl?.getAttribute('url') || '';
+    const episodes = Array.from(entries).slice(0, EPISODE_COUNT).map((entry, i) => {
+      const title = entry.querySelector('title')?.textContent || 'Untitled';
+      const videoId = entry.querySelector('videoId')?.textContent || '';
+      const link = videoId ? `https://www.youtube.com/watch?v=${videoId}` : '#';
+      const published = entry.querySelector('published')?.textContent || '';
+      // Use maxresdefault with fallback to hqdefault
+      const thumbnail = videoId
+        ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`
+        : '';
 
       // Detect guest/collab episodes from title
-      const isGuest = /\bw\/\b/i.test(title);
+      const isGuest = /\bw\/\b/i.test(title) || /\|/.test(title);
       const isCollab = /\bcollab\b/i.test(title);
 
       // Format date
       let dateStr = '';
-      if (pubDate) {
-        const d = new Date(pubDate);
+      if (published) {
+        const d = new Date(published);
         dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       }
 
