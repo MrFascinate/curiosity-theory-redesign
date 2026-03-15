@@ -132,7 +132,7 @@
 
   const EPISODE_COUNT = 8;
   // Use the API proxy on Vercel, fall back to a CORS proxy for local dev
-  const YT_FEED = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCxFN5wHxJ7oig9TF9oadaug';
+  const YT_FEED = 'https://www.youtube.com/feeds/videos.xml?playlist_id=PLerj-DEth8q7EzA53mekUtVwuWog6n8GQ';
   const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
   const FEED_URL = isLocal
     ? 'https://api.allorigins.win/raw?url=' + encodeURIComponent(YT_FEED)

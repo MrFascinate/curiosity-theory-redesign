@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const response = await fetch(
-      'https://www.youtube.com/feeds/videos.xml?channel_id=UCxFN5wHxJ7oig9TF9oadaug'
+      'https://www.youtube.com/feeds/videos.xml?playlist_id=PLerj-DEth8q7EzA53mekUtVwuWog6n8GQ'
     );
 
     if (!response.ok) {
