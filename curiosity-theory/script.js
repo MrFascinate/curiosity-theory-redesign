@@ -153,7 +153,7 @@
       const title = item.querySelector('title')?.textContent || 'Untitled';
       const link = item.querySelector('link')?.textContent || '#';
       const pubDate = item.querySelector('pubDate')?.textContent || '';
-      const mediaEl = item.getElementsByTagNameNS('http://search.yahoo.com/mrss/', 'content')[0];
+      const mediaEl = item.querySelector('content');
       const thumbnail = mediaEl?.getAttribute('url') || '';
 
       // Detect guest/collab episodes from title
