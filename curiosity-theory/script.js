@@ -125,13 +125,100 @@
   });
 })();
 
+// --- Dynamic episode loading from RSS feed ---
+(async function loadEpisodes() {
+  const container = document.getElementById('episodeList');
+  if (!container) return;
+
+  const EPISODE_COUNT = 8;
+  // Use the API proxy on Vercel, fall back to a CORS proxy for local dev
+  const RSS_URL = 'https://www.curiositytheorypod.com/episodes?format=rss';
+  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const FEED_URL = isLocal
+    ? 'https://api.allorigins.win/raw?url=' + encodeURIComponent(RSS_URL)
+    : '/api/feed';
+
+  try {
+    const res = await fetch(FEED_URL);
+    if (!res.ok) throw new Error('Feed fetch failed');
+
+    const xml = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'application/xml');
+    const items = doc.querySelectorAll('item');
+
+    if (items.length === 0) throw new Error('No episodes found');
+
+    const episodes = Array.from(items).slice(0, EPISODE_COUNT).map((item, i) => {
+      const title = item.querySelector('title')?.textContent || 'Untitled';
+      const link = item.querySelector('link')?.textContent || '#';
+      const pubDate = item.querySelector('pubDate')?.textContent || '';
+      const mediaEl = item.getElementsByTagNameNS('http://search.yahoo.com/mrss/', 'content')[0];
+      const thumbnail = mediaEl?.getAttribute('url') || '';
+
+      // Detect guest/collab episodes from title
+      const isGuest = /\bw\/\b/i.test(title);
+      const isCollab = /\bcollab\b/i.test(title);
+
+      // Format date
+      let dateStr = '';
+      if (pubDate) {
+        const d = new Date(pubDate);
+        dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      return { title, link, dateStr, thumbnail, isGuest, isCollab, isNew: i === 0 };
+    });
+
+    container.innerHTML = episodes.map(ep => {
+      let badgeHTML = '';
+      if (ep.isNew) badgeHTML = '<span class="episode-badge">New</span>';
+      else if (ep.isCollab) badgeHTML = '<span class="episode-badge guest">Collab</span>';
+      else if (ep.isGuest) badgeHTML = '<span class="episode-badge guest">Guest</span>';
+
+      const thumbHTML = ep.thumbnail
+        ? `<div class="episode-thumb"><img src="${ep.thumbnail}" alt="" loading="lazy"></div>`
+        : '';
+
+      return `
+        <article class="episode-card${ep.isNew ? ' fade-up visible' : ' fade-up'}"${ep.isNew ? ' data-episode="new"' : ''}>
+          ${thumbHTML}
+          <div class="episode-meta">
+            <span class="episode-date">${ep.dateStr}</span>
+            ${badgeHTML}
+          </div>
+          <h4 class="episode-title">${ep.title}</h4>
+          <div class="episode-actions">
+            <a href="${ep.link}" class="btn btn-play" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Listen
+            </a>
+          </div>
+        </article>`;
+    }).join('');
+
+    // Re-run scroll reveal on new cards
+    initScrollReveal();
+  } catch (err) {
+    container.innerHTML = `
+      <div class="episode-error">
+        <p>Couldn't load episodes right now.</p>
+        <a href="https://www.curiositytheorypod.com/episodes" class="btn btn-outline" target="_blank" rel="noopener">
+          View on curiositytheorypod.com
+        </a>
+      </div>`;
+  }
+})();
+
 // --- Scroll reveal animations ---
-(function initScrollReveal() {
+function initScrollReveal() {
   const elements = document.querySelectorAll(
     '.episode-card, .platform-card, .host-card, .merch-card, .contact-layout, .hero-content, .hero-stats'
   );
 
-  elements.forEach(el => el.classList.add('fade-up'));
+  elements.forEach(el => {
+    if (!el.classList.contains('fade-up')) el.classList.add('fade-up');
+  });
 
   const observer = new IntersectionObserver(
     entries => {
@@ -145,7 +232,8 @@
   );
 
   elements.forEach(el => observer.observe(el));
-})();
+}
+initScrollReveal();
 
 // --- Smooth scroll for anchor links ---
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
