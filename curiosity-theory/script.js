@@ -2,65 +2,6 @@
    CURIOSITY THEORY — Interactivity
    ============================================ */
 
-// --- Starfield Background ---
-(function initStarfield() {
-  const canvas = document.getElementById('starfield');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-  const STAR_COUNT = 200;
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function createStars() {
-    stars = [];
-    for (let i = 0; i < STAR_COUNT; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5 + 0.3,
-        alpha: Math.random() * 0.6 + 0.1,
-        speed: Math.random() * 0.3 + 0.05,
-        drift: (Math.random() - 0.5) * 0.15
-      });
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(star => {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(180, 180, 220, ${star.alpha})`;
-      ctx.fill();
-
-      // Slow drift
-      star.y -= star.speed;
-      star.x += star.drift;
-
-      // Twinkle
-      star.alpha += (Math.random() - 0.5) * 0.02;
-      star.alpha = Math.max(0.05, Math.min(0.7, star.alpha));
-
-      // Wrap around
-      if (star.y < -5) {
-        star.y = canvas.height + 5;
-        star.x = Math.random() * canvas.width;
-      }
-      if (star.x < -5) star.x = canvas.width + 5;
-      if (star.x > canvas.width + 5) star.x = -5;
-    });
-    requestAnimationFrame(draw);
-  }
-
-  resize();
-  createStars();
-  draw();
-  window.addEventListener('resize', () => { resize(); createStars(); });
-})();
 
 // --- Navbar scroll effect ---
 (function initNavbar() {
@@ -216,7 +157,7 @@
 // --- Scroll reveal animations ---
 function initScrollReveal() {
   const elements = document.querySelectorAll(
-    '.episode-card, .platform-card, .host-card, .merch-card, .contact-layout, .hero-content, .hero-stats'
+    '.episode-card, .platform-card, .host-card, .merch-card, .contact-layout, .hero-content'
   );
 
   elements.forEach(el => {
