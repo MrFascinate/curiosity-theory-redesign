@@ -2,13 +2,16 @@
    CURIOSITY THEORY — Interactivity
    ============================================ */
 
-// --- Starfield Background ---
+// --- Dynamic Space Background ---
 (function initStarfield() {
   const canvas = document.getElementById('starfield');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let stars = [];
-  const STAR_COUNT = 200;
+  let shootingStars = [];
+  let nebulae = [];
+  const STAR_COUNT = 300;
+  let time = 0;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -18,41 +21,120 @@
   function createStars() {
     stars = [];
     for (let i = 0; i < STAR_COUNT; i++) {
+      const colorRoll = Math.random();
+      let r, g, b;
+      if (colorRoll < 0.15) { r = 255; g = 220; b = 150; }       // gold stars
+      else if (colorRoll < 0.3) { r = 200; g = 200; b = 255; }    // blue-white
+      else if (colorRoll < 0.4) { r = 255; g = 200; b = 180; }    // warm
+      else { r = 210; g = 210; b = 230; }                          // white
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5 + 0.3,
-        alpha: Math.random() * 0.6 + 0.1,
-        speed: Math.random() * 0.3 + 0.05,
-        drift: (Math.random() - 0.5) * 0.15
+        radius: Math.random() * 1.8 + 0.2,
+        alpha: Math.random() * 0.7 + 0.1,
+        baseAlpha: Math.random() * 0.5 + 0.2,
+        speed: Math.random() * 0.2 + 0.02,
+        drift: (Math.random() - 0.5) * 0.1,
+        twinkleSpeed: Math.random() * 0.03 + 0.01,
+        twinkleOffset: Math.random() * Math.PI * 2,
+        r, g, b
+      });
+    }
+
+    nebulae = [];
+    for (let i = 0; i < 4; i++) {
+      nebulae.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 300 + 200,
+        r: Math.random() < 0.5 ? 212 : 100,
+        g: Math.random() < 0.5 ? 168 : 80,
+        b: Math.random() < 0.5 ? 71 : 150,
+        alpha: Math.random() * 0.03 + 0.01,
+        driftX: (Math.random() - 0.5) * 0.08,
+        driftY: (Math.random() - 0.5) * 0.08
       });
     }
   }
 
+  function spawnShootingStar() {
+    if (shootingStars.length >= 2) return;
+    shootingStars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height * 0.5,
+      length: Math.random() * 80 + 40,
+      speed: Math.random() * 6 + 4,
+      angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+      alpha: 1,
+      decay: Math.random() * 0.015 + 0.01
+    });
+  }
+
   function draw() {
+    time++;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Nebulae
+    nebulae.forEach(n => {
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius);
+      grad.addColorStop(0, `rgba(${n.r}, ${n.g}, ${n.b}, ${n.alpha})`);
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(n.x - n.radius, n.y - n.radius, n.radius * 2, n.radius * 2);
+      n.x += n.driftX;
+      n.y += n.driftY;
+      if (n.x < -n.radius) n.x = canvas.width + n.radius;
+      if (n.x > canvas.width + n.radius) n.x = -n.radius;
+      if (n.y < -n.radius) n.y = canvas.height + n.radius;
+      if (n.y > canvas.height + n.radius) n.y = -n.radius;
+    });
+
+    // Stars
     stars.forEach(star => {
+      star.alpha = star.baseAlpha + Math.sin(time * star.twinkleSpeed + star.twinkleOffset) * 0.3;
+      star.alpha = Math.max(0.05, Math.min(0.9, star.alpha));
+
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(180, 180, 220, ${star.alpha})`;
+      ctx.fillStyle = `rgba(${star.r}, ${star.g}, ${star.b}, ${star.alpha})`;
       ctx.fill();
 
-      // Slow drift
+      // Glow for brighter stars
+      if (star.radius > 1.2) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${star.r}, ${star.g}, ${star.b}, ${star.alpha * 0.1})`;
+        ctx.fill();
+      }
+
       star.y -= star.speed;
       star.x += star.drift;
-
-      // Twinkle
-      star.alpha += (Math.random() - 0.5) * 0.02;
-      star.alpha = Math.max(0.05, Math.min(0.7, star.alpha));
-
-      // Wrap around
-      if (star.y < -5) {
-        star.y = canvas.height + 5;
-        star.x = Math.random() * canvas.width;
-      }
+      if (star.y < -5) { star.y = canvas.height + 5; star.x = Math.random() * canvas.width; }
       if (star.x < -5) star.x = canvas.width + 5;
       if (star.x > canvas.width + 5) star.x = -5;
     });
+
+    // Shooting stars
+    if (Math.random() < 0.003) spawnShootingStar();
+    shootingStars = shootingStars.filter(s => {
+      const tailX = s.x - Math.cos(s.angle) * s.length;
+      const tailY = s.y - Math.sin(s.angle) * s.length;
+      const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+      grad.addColorStop(0, `rgba(212, 168, 71, 0)`);
+      grad.addColorStop(1, `rgba(255, 240, 200, ${s.alpha})`);
+      ctx.beginPath();
+      ctx.moveTo(tailX, tailY);
+      ctx.lineTo(s.x, s.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      s.x += Math.cos(s.angle) * s.speed;
+      s.y += Math.sin(s.angle) * s.speed;
+      s.alpha -= s.decay;
+      return s.alpha > 0;
+    });
+
     requestAnimationFrame(draw);
   }
 
@@ -216,7 +298,7 @@
 // --- Scroll reveal animations ---
 function initScrollReveal() {
   const elements = document.querySelectorAll(
-    '.episode-card, .platform-card, .host-card, .merch-card, .contact-layout, .hero-content, .hero-stats'
+    '.episode-card, .platform-card, .host-card, .merch-card, .contact-layout, .hero-content'
   );
 
   elements.forEach(el => {
