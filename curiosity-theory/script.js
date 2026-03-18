@@ -100,10 +100,6 @@
         ? `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`
         : '';
 
-      // Detect guest/collab episodes from title
-      const isGuest = /\bw\/\b/i.test(title) || /\|/.test(title);
-      const isCollab = /\bcollab\b/i.test(title);
-
       // Format date
       let dateStr = '';
       if (published) {
@@ -111,14 +107,12 @@
         dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       }
 
-      return { title, link, dateStr, thumbnail, isGuest, isCollab, isNew: i === 0 };
+      return { title, link, dateStr, thumbnail, isNew: i === 0 };
     });
 
     container.innerHTML = episodes.map(ep => {
       let badgeHTML = '';
       if (ep.isNew) badgeHTML = '<span class="episode-badge">New</span>';
-      else if (ep.isCollab) badgeHTML = '<span class="episode-badge guest">Collab</span>';
-      else if (ep.isGuest) badgeHTML = '<span class="episode-badge guest">Guest</span>';
 
       const thumbHTML = ep.thumbnail
         ? `<div class="episode-thumb"><img src="${ep.thumbnail}" alt="" loading="lazy"></div>`
