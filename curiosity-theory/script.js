@@ -189,3 +189,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// --- Merch size & color option toggles ---
+(function initMerchOptions() {
+  document.querySelectorAll('.merch-size-options').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.merch-size-btn');
+      if (!btn) return;
+      group.querySelectorAll('.merch-size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.merch-color-options').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.merch-color-btn');
+      if (!btn) return;
+      group.querySelectorAll('.merch-color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+})();
