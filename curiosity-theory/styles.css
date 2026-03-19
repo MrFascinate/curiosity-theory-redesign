@@ -671,11 +671,55 @@ h1, h2, h3, h4, h5 {
   letter-spacing: 0.05em;
 }
 
+.host-bio-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.host-bio-wrapper .host-bio {
+  max-height: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.host-bio-wrapper.expanded .host-bio {
+  max-height: 400px;
+  opacity: 1;
+}
+
 .host-bio {
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.7;
   margin-bottom: 20px;
+}
+
+.host-bio-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-hover);
+  background: var(--bg-secondary);
+  color: var(--accent-light);
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 8px;
+}
+.host-bio-toggle:hover {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  transform: scale(1.1);
+}
+.host-bio-toggle svg {
+  transition: transform 0.3s ease;
+}
+.host-bio-wrapper.expanded .host-bio-toggle svg {
+  transform: rotate(45deg);
 }
 
 .host-socials {

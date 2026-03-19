@@ -204,3 +204,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
   });
 })();
+
+// --- Host bio expand/collapse ---
+(function initBioToggles() {
+  document.querySelectorAll('.host-bio-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const wrapper = btn.closest('.host-bio-wrapper');
+      wrapper.classList.toggle('expanded');
+    });
+  });
+})();
