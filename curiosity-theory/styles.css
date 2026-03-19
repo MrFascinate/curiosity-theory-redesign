@@ -1068,7 +1068,20 @@ h1, h2, h3, h4, h5 {
   }
 
   .host-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .host-image {
+    height: 280px;
+  }
+  .host-info {
+    padding: 20px;
+  }
+  .host-name {
+    font-size: 1.1rem;
+  }
+  .host-bio {
+    font-size: 0.85rem;
   }
 
   .merch-grid {
@@ -1118,5 +1131,21 @@ h1, h2, h3, h4, h5 {
   .btn-lg {
     width: 100%;
     justify-content: center;
+  }
+  .host-grid {
+    gap: 12px;
+  }
+  .host-image {
+    height: 200px;
+  }
+  .host-info {
+    padding: 16px;
+  }
+  .host-name {
+    font-size: 1rem;
+  }
+  .host-bio {
+    font-size: 0.8rem;
+    line-height: 1.5;
   }
 }
