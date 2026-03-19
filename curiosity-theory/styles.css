@@ -444,7 +444,7 @@ h1, h2, h3, h4, h5 {
 .platforms {
   position: relative;
   z-index: 1;
-  padding: 80px 0;
+  padding: 40px 0;
   text-align: center;
 }
 
@@ -492,7 +492,7 @@ h1, h2, h3, h4, h5 {
 .episodes {
   position: relative;
   z-index: 1;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 .episode-list {
@@ -617,7 +617,7 @@ h1, h2, h3, h4, h5 {
 .hosts {
   position: relative;
   z-index: 1;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 .host-grid {
@@ -748,7 +748,7 @@ h1, h2, h3, h4, h5 {
 .merch {
   position: relative;
   z-index: 1;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 .merch-grid {
@@ -890,7 +890,7 @@ h1, h2, h3, h4, h5 {
 .contact {
   position: relative;
   z-index: 1;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 .contact-layout {
