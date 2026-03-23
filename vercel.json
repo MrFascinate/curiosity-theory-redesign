@@ -1,6 +1,7 @@
 {
   "outputDirectory": "curiosity-theory",
   "rewrites": [
-    { "source": "/api/feed", "destination": "/api/feed" }
+    { "source": "/api/feed", "destination": "/api/feed" },
+    { "source": "/api/merch", "destination": "/api/merch" }
   ]
 }

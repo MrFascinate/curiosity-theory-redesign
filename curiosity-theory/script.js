@@ -184,25 +184,74 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// --- Merch size & color option toggles ---
-(function initMerchOptions() {
-  document.querySelectorAll('.merch-size-options').forEach(group => {
-    group.addEventListener('click', e => {
-      const btn = e.target.closest('.merch-size-btn');
-      if (!btn) return;
-      group.querySelectorAll('.merch-size-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
+// --- Dynamic merch loading from Printify API ---
+(async function loadMerch() {
+  const grid = document.getElementById('merchGrid');
+  const ctaContainer = document.getElementById('merchCta');
+  const shopLink = document.getElementById('merchShopLink');
+  if (!grid) return;
 
-  document.querySelectorAll('.merch-color-options').forEach(group => {
-    group.addEventListener('click', e => {
-      const btn = e.target.closest('.merch-color-btn');
-      if (!btn) return;
-      group.querySelectorAll('.merch-color-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
+  const MERCH_URL = '/api/merch';
+
+  try {
+    const res = await fetch(MERCH_URL);
+    if (!res.ok) throw new Error('Merch fetch failed');
+
+    const data = await res.json();
+    const products = data.products || [];
+
+    if (products.length === 0) throw new Error('No products found');
+
+    // Set up "Shop All Merch" link
+    if (data.shop && data.shop.url && shopLink) {
+      shopLink.href = data.shop.url;
+      ctaContainer.style.display = '';
+    } else if (shopLink) {
+      // Fallback to existing merch page
+      shopLink.href = 'https://www.curiositytheorypod.com/merch';
+      ctaContainer.style.display = '';
+    }
+
+    grid.innerHTML = products.map(product => {
+      const priceText = product.hasVariants
+        ? `from $${product.price.toFixed(2)}`
+        : `$${product.price.toFixed(2)}`;
+
+      const btnText = product.hasVariants ? 'View Options' : 'Add to Cart';
+
+      // Link to the product's external Pop-Up Store page, or fall back to shop URL
+      const productUrl = product.externalUrl
+        || (data.shop && data.shop.url ? data.shop.url : 'https://www.curiositytheorypod.com/merch');
+
+      const imgHTML = product.image
+        ? `<img src="${product.image}" alt="${product.title}" loading="lazy">`
+        : '';
+
+      return `
+        <div class="merch-card fade-up">
+          <div class="merch-image">
+            ${imgHTML}
+          </div>
+          <div class="merch-info">
+            <h5 class="merch-name">${product.title}</h5>
+            <p class="merch-price">${priceText}</p>
+            <a href="${productUrl}" class="merch-btn" target="_blank" rel="noopener">${btnText}</a>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Re-run scroll reveal on new cards
+    initScrollReveal();
+  } catch (err) {
+    grid.innerHTML = `
+      <div class="merch-error">
+        <p>Couldn't load merch right now.</p>
+        <a href="https://www.curiositytheorypod.com/merch" class="btn btn-outline" target="_blank" rel="noopener">
+          Shop on curiositytheorypod.com
+        </a>
+      </div>`;
+    if (ctaContainer) ctaContainer.style.display = 'none';
+  }
 })();
 
 // --- Host bio expand/collapse ---
