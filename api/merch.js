@@ -2,10 +2,9 @@ const PRINTIFY_BASE = 'https://api.printify.com/v1';
 
 export default async function handler(req, res) {
   // Check for token under multiple possible env var names
-  const token = process.env.PRINTIFY_API_TOKEN
-    || process.env.PRINTIFY_TOKEN
-    || process.env.PRINTIFY_API_KEY
-    || process.env.PRINTIFY_KEY;
+  const token = process.env.Printify_API_token
+    || process.env.PRINTIFY_API_TOKEN
+    || process.env.PRINTIFY_TOKEN;
 
   if (!token) {
     return res.status(500).json({
