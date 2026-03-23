@@ -195,10 +195,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
   try {
     const res = await fetch(MERCH_URL);
-    if (!res.ok) throw new Error('Merch fetch failed');
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || errData.error || `API returned ${res.status}`);
+    }
 
     const data = await res.json();
-    const products = data.products || [];
+    const products = (data.products || []).filter(p => p.visible !== false);
 
     if (products.length === 0) throw new Error('No products found');
 
@@ -246,6 +249,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     grid.innerHTML = `
       <div class="merch-error">
         <p>Couldn't load merch right now.</p>
+        <p style="font-size:0.75rem;color:#666;margin-top:8px;">${err.message}</p>
         <a href="https://www.curiositytheorypod.com/merch" class="btn btn-outline" target="_blank" rel="noopener">
           Shop on curiositytheorypod.com
         </a>
