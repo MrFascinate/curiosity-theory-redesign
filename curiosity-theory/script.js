@@ -211,7 +211,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       ctaContainer.style.display = '';
     } else if (shopLink) {
       // Fallback to existing merch page
-      shopLink.href = 'https://www.curiositytheorypod.com/merch';
+      shopLink.href = 'https://curiosity-theory-merch.printify.me/';
       ctaContainer.style.display = '';
     }
 
@@ -224,7 +224,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
       // Link to the product's external Pop-Up Store page, or fall back to shop URL
       const productUrl = product.externalUrl
-        || (data.shop && data.shop.url ? data.shop.url : 'https://www.curiositytheorypod.com/merch');
+        || (data.shop && data.shop.url ? data.shop.url : 'https://curiosity-theory-merch.printify.me/');
 
       const imgHTML = product.image
         ? `<img src="${product.image}" alt="${product.title}" loading="lazy">`
@@ -250,7 +250,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       <div class="merch-error">
         <p>Couldn't load merch right now.</p>
         <p style="font-size:0.75rem;color:#666;margin-top:8px;">${err.message}</p>
-        <a href="https://www.curiositytheorypod.com/merch" class="btn btn-outline" target="_blank" rel="noopener">
+        <a href="https://curiosity-theory-merch.printify.me/" class="btn btn-outline" target="_blank" rel="noopener">
           Shop on curiositytheorypod.com
         </a>
       </div>`;
