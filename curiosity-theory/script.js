@@ -201,7 +201,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
 
     const data = await res.json();
-    const products = (data.products || []).filter(p => p.visible !== false).slice(0, 3);
+    // Curate specific product types: 1 hoodie, 1 "Young Black and Rigorous" shirt, 1 mug
+    const allVisible = (data.products || []).filter(p => p.visible !== false);
+    const titleLower = p => p.title.toLowerCase();
+    const hoodie = allVisible.find(p => titleLower(p).includes('hoodie'));
+    const shirt = allVisible.find(p => titleLower(p).includes('young black') && titleLower(p).includes('rigorous'));
+    const mug = allVisible.find(p => titleLower(p).includes('mug'));
+    const products = [hoodie, shirt, mug].filter(Boolean);
 
     if (products.length === 0) throw new Error('No products found');
 
