@@ -201,7 +201,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
 
     const data = await res.json();
-    const products = (data.products || []).filter(p => p.visible !== false);
+    const products = (data.products || []).filter(p => p.visible !== false).slice(0, 3);
 
     if (products.length === 0) throw new Error('No products found');
 
