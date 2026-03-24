@@ -1095,6 +1095,7 @@ h1, h2, h3, h4, h5 {
     justify-content: center;
     gap: 16px;
     z-index: 999;
+    padding-bottom: 220px;
   }
   .nav-links.open .nav-link {
     font-size: 1.4rem;
@@ -1107,25 +1108,22 @@ h1, h2, h3, h4, h5 {
     align-items: center;
     gap: 12px;
     position: fixed;
-    bottom: 60px;
+    bottom: 48px;
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 0 24px;
+    padding: 0 32px;
   }
-  .nav-actions.open .btn-sponsor {
-    width: 100%;
-    max-width: 320px;
-    text-align: center;
-    font-size: 1rem;
-    padding: 14px 24px;
-  }
+  .nav-actions.open .btn-sponsor,
   .nav-actions.open .btn-accent {
     width: 100%;
     max-width: 320px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1rem;
-    padding: 14px 24px;
+    padding: 16px 24px;
   }
   .nav-actions.open .nav-socials {
     display: flex;
