@@ -1100,6 +1100,38 @@ h1, h2, h3, h4, h5 {
     font-size: 1.4rem;
     padding: 12px 24px;
   }
+  .nav-links.open ~ .nav-actions,
+  .nav-actions.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 24px;
+  }
+  .nav-actions.open .btn-sponsor {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    font-size: 1rem;
+    padding: 14px 24px;
+  }
+  .nav-actions.open .btn-accent {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    font-size: 1rem;
+    padding: 14px 24px;
+  }
+  .nav-actions.open .nav-socials {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+  }
   .mobile-toggle {
     display: flex;
     z-index: 1001;
