@@ -244,13 +244,12 @@
   transform: translateY(-2px);
 }
 .sp-guest-image {
-  width: 80px;
-  height: 80px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   margin: 0 auto 16px;
   overflow: hidden;
   background: var(--accent);
-  box-shadow: 0 8px 32px rgba(212, 168, 71, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 .sp-guest-image img {
   width: 100%;
