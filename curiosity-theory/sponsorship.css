@@ -373,6 +373,94 @@
   margin-top: 3px;
 }
 
+/* --- Audience Profile --- */
+.sp-audience {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+}
+.sp-audience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.sp-audience-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 32px 24px;
+  text-align: center;
+  transition: all var(--transition);
+}
+.sp-audience-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+.sp-audience-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.sp-audience-card h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.sp-audience-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* --- Hosts --- */
+.sp-hosts {
+  position: relative;
+  z-index: 1;
+  padding: 80px 0;
+}
+.sp-hosts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.sp-host-card {
+  text-align: center;
+}
+.sp-host-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  overflow: hidden;
+  background: var(--accent);
+  box-shadow: 0 8px 32px rgba(212, 168, 71, 0.3), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+.sp-host-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sp-host-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sp-host-title {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
 /* --- Why Partner --- */
 .sp-why {
   position: relative;
@@ -479,6 +567,9 @@
   .sp-guests-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+  .sp-audience-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -501,6 +592,15 @@
     grid-template-columns: 1fr;
     max-width: 400px;
     margin: 0 auto;
+  }
+  .sp-audience-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .sp-hosts-grid {
+    grid-template-columns: 1fr;
+    max-width: 280px;
   }
   .sp-contact-box {
     padding: 40px 24px;
