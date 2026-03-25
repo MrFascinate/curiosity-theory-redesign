@@ -1095,7 +1095,8 @@ h1, h2, h3, h4, h5 {
     justify-content: center;
     gap: 16px;
     z-index: 999;
-    padding-bottom: 220px;
+    padding: 80px 0 220px;
+    overflow-y: auto;
   }
   .nav-links.open .nav-link {
     font-size: 1.4rem;
