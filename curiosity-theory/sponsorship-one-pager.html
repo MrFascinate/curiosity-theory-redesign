@@ -396,6 +396,13 @@
     }
     .back-btn:hover { border-color: rgba(255,255,255,0.3); }
 
+    /* ── Page break for print ── */
+    .page-2-start {
+      page-break-before: always;
+      break-before: page;
+      padding-top: 32px;
+    }
+
     /* ── Print styles ── */
     @media print {
       body {
@@ -498,42 +505,42 @@
       </div>
     </div>
 
-    <!-- Hosts + Audience / Guests in two columns -->
-    <div class="two-col">
-      <!-- Left: Hosts -->
-      <div>
-        <p class="section-label">Meet the Hosts</p>
-        <h2 class="section-title">Your On-Air Partners</h2>
-        <div class="hosts" style="grid-template-columns: 1fr; gap: 12px;">
-          <div class="host">
-            <img src="DSC00633.jpg" alt="Justin Shaifer">
-            <div class="host-info">
-              <h4>Justin "Mr. Fascinate" Shaifer</h4>
-              <p class="host-title">STEM Media Producer &amp; Thought Leader</p>
-              <p class="host-bio">Science &amp; technology thought leader, STEM educator, media personality and keynote speaker. Executive producer and on-camera talent at Fascinate Media. Past clients include LinkedIn, Intuit, NVIDIA, Google, PBS, Bill Nye the Science Guy, and Al Roker.</p>
-            </div>
-          </div>
-          <div class="host">
-            <img src="DSC00564-2.jpg" alt="Dr. Dakotah Tyler">
-            <div class="host-info">
-              <h4>Dr. Dakotah Tyler</h4>
-              <p class="host-title">Astronomer &amp; Astrophysicist</p>
-              <p class="host-bio">From Division I college football to studying the universe. PhD in Astronomy &amp; Astrophysics from UCLA, researching exoplanets and planetary systems using some of the most advanced telescopes on Earth.</p>
-            </div>
-          </div>
+    <!-- Hosts (side by side) -->
+    <div>
+      <p class="section-label">Meet the Hosts</p>
+      <h2 class="section-title">Your On-Air Partners</h2>
+    </div>
+    <div class="hosts" style="margin-bottom: 28px;">
+      <div class="host">
+        <img src="DSC00633.jpg" alt="Justin Shaifer">
+        <div class="host-info">
+          <h4>Justin "Mr. Fascinate" Shaifer</h4>
+          <p class="host-title">STEM Media Producer &amp; Thought Leader</p>
+          <p class="host-bio">Science &amp; technology thought leader, STEM educator, media personality and keynote speaker. Executive producer and on-camera talent at Fascinate Media. Past clients include LinkedIn, Intuit, NVIDIA, Google, PBS, Bill Nye the Science Guy, and Al Roker.</p>
         </div>
       </div>
+      <div class="host">
+        <img src="DSC00564-2.jpg" alt="Dr. Dakotah Tyler">
+        <div class="host-info">
+          <h4>Dr. Dakotah Tyler</h4>
+          <p class="host-title">Astronomer &amp; Astrophysicist</p>
+          <p class="host-bio">From Division I college football to studying the universe. PhD in Astronomy &amp; Astrophysics from UCLA, researching exoplanets and planetary systems using some of the most advanced telescopes on Earth.</p>
+        </div>
+      </div>
+    </div>
 
-      <!-- Right: Audience + Notable Guests -->
+    <!-- Audience + Notable Guests side by side -->
+    <div class="two-col" style="margin-bottom: 0;">
       <div>
         <p class="section-label">Audience</p>
         <h2 class="section-title">Profile</h2>
-        <ul class="audience-list" style="margin-bottom: 20px;">
+        <ul class="audience-list">
           <li><strong>Demographics:</strong> Educated, curious, ages 24–50, health-conscious, decision-makers, tech-savvy</li>
           <li><strong>Interests:</strong> Science, technology, innovation, education, personal development, sci-fi</li>
           <li><strong>Similar Shows:</strong> Lex Fridman, StarTalk, Ologies, Huberman Lab</li>
         </ul>
-
+      </div>
+      <div>
         <p class="section-label">Notable</p>
         <h2 class="section-title">Guests</h2>
         <div class="guests">
@@ -559,7 +566,7 @@
     </div>
 
     <!-- Sponsorship Tiers -->
-    <div>
+    <div class="page-2-start">
       <p class="section-label">Sponsorship</p>
       <h2 class="section-title">Tiers</h2>
     </div>
