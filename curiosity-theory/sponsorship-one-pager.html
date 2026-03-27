@@ -308,9 +308,7 @@
 
     /* ── Footer / Contact ── */
     .footer-cta {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
+      margin-top: 48px;
       text-align: center;
     }
     .footer-cta h3 {
@@ -402,9 +400,13 @@
       }
       .print-bar { display: none !important; }
       /* Prevent any element from breaking across pages */
-      .hosts, .tiers, .why-grid, .guests {
+      .hosts, .tiers, .why-grid, .guests, .footer-cta {
         page-break-inside: avoid;
         break-inside: avoid;
+      }
+      .footer-cta {
+        page-break-before: avoid;
+        break-before: avoid;
       }
       @page {
         size: letter;
