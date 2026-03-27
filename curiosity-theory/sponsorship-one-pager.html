@@ -398,7 +398,24 @@
 
     /* ── Print styles ── */
     @media print {
-      body { background: #050505 !important; }
+      body {
+        background: #050505 !important;
+        /* Force dark background in print — browsers ignore background-color */
+        box-shadow: inset 0 0 0 9999px #050505;
+      }
+      .page {
+        position: relative;
+      }
+      .page::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #050505;
+        z-index: -1;
+      }
       .print-bar { display: none !important; }
       .page {
         padding: 24px 32px;
