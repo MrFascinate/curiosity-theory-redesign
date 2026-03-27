@@ -177,56 +177,51 @@
       line-height: 1.45;
     }
 
-    /* ── Audience + Guests row ── */
-    .audience-guests-row {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 0;
-    }
-    .audience-col { flex: 1; }
-    .guests-col { flex: 1; }
+    /* ── Audience ── */
     .audience-list { list-style: none; }
     .audience-list li {
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       color: var(--text-secondary);
-      padding: 4px 0;
+      padding: 6px 0;
       border-bottom: 1px solid rgba(255,255,255,0.04);
-      line-height: 1.4;
+      line-height: 1.5;
     }
     .audience-list li strong {
       color: var(--text);
       font-weight: 600;
     }
+
+    /* ── Notable guests ── */
     .guests {
       display: flex;
-      gap: 12px;
+      gap: 16px;
     }
     .guest { text-align: center; flex: 1; }
     .guest img {
-      width: 54px;
-      height: 54px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--border);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     .guest h5 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 600;
     }
-    .guest p { font-size: 0.5rem; color: var(--text-secondary); }
+    .guest p { font-size: 0.55rem; color: var(--text-secondary); }
     .guest .guest-reach {
-      font-size: 0.5rem;
+      font-size: 0.55rem;
       color: var(--accent);
       font-weight: 600;
     }
 
-    /* ── Page 2 ── */
-    .page-2 {
+    /* ── Page breaks ── */
+    .page-break {
       page-break-before: always;
       break-before: page;
-      padding-top: 32px;
+      padding-top: 36px;
     }
 
     /* ── Tiers ── */
@@ -407,7 +402,7 @@
       }
       .print-bar { display: none !important; }
       /* Prevent any element from breaking across pages */
-      .hosts, .audience-guests-row, .tiers, .why-grid {
+      .hosts, .tiers, .why-grid, .guests {
         page-break-inside: avoid;
         break-inside: avoid;
       }
@@ -424,7 +419,7 @@
       .metrics { flex-wrap: wrap; }
       .metric { min-width: calc(50% - 8px); }
       .hosts { flex-direction: column; }
-      .audience-guests-row { flex-direction: column; }
+      .guests { flex-wrap: wrap; }
       .tiers { flex-direction: column; }
       .reviews { flex-direction: column; }
       .guests { flex-wrap: wrap; }
@@ -511,44 +506,42 @@
       </div>
     </div>
 
-    <!-- Audience + Notable Guests (single row) -->
-    <div class="audience-guests-row">
-      <div class="audience-col">
-        <p class="section-label">Audience</p>
-        <h2 class="section-title">Profile</h2>
-        <ul class="audience-list">
-          <li><strong>Demographics:</strong> Educated, curious, ages 24–50, health-conscious, decision-makers, tech-savvy</li>
-          <li><strong>Interests:</strong> Science, technology, innovation, education, personal development, sci-fi</li>
-          <li><strong>Similar Shows:</strong> Lex Fridman, StarTalk, Ologies, Huberman Lab</li>
-        </ul>
+    <!-- PAGE 2: Audience + Guests + Tiers + Why Partner -->
+    <div class="page-break">
+      <p class="section-label">Audience</p>
+      <h2 class="section-title">Profile</h2>
+    </div>
+    <ul class="audience-list" style="margin-bottom: 28px;">
+      <li><strong>Demographics:</strong> Educated, curious, ages 24–50, health-conscious, decision-makers, tech-savvy</li>
+      <li><strong>Interests:</strong> Science, technology, innovation, education, personal development, sci-fi</li>
+      <li><strong>Similar Shows:</strong> Lex Fridman, StarTalk, Ologies, Huberman Lab</li>
+    </ul>
+
+    <div>
+      <p class="section-label">Notable</p>
+      <h2 class="section-title">Guests</h2>
+    </div>
+    <div class="guests" style="margin-bottom: 28px;">
+      <div class="guest">
+        <img src="hankgreen.png" alt="Hank Green">
+        <h5>Hank Green</h5>
+        <p>Science YouTuber, Author</p>
+        <p class="guest-reach">5M+ followers</p>
       </div>
-      <div class="guests-col">
-        <p class="section-label">Notable</p>
-        <h2 class="section-title">Guests</h2>
-        <div class="guests">
-          <div class="guest">
-            <img src="hankgreen.png" alt="Hank Green">
-            <h5>Hank Green</h5>
-            <p>Science YouTuber, Author</p>
-            <p class="guest-reach">5M+ followers</p>
-          </div>
-          <div class="guest">
-            <img src="ryangosling.png" alt="Ryan Gosling">
-            <h5>Ryan Gosling</h5>
-            <p>Actor, Entertainer</p>
-          </div>
-          <div class="guest">
-            <img src="ashleychristine.png" alt="Ashley Christine">
-            <h5>Ashley Christine</h5>
-            <p>Author &amp; Communicator</p>
-            <p class="guest-reach">1.2M+ followers</p>
-          </div>
-        </div>
+      <div class="guest">
+        <img src="ryangosling.png" alt="Ryan Gosling">
+        <h5>Ryan Gosling</h5>
+        <p>Actor, Entertainer</p>
+      </div>
+      <div class="guest">
+        <img src="ashleychristine.png" alt="Ashley Christine">
+        <h5>Ashley Christine</h5>
+        <p>Author &amp; Communicator</p>
+        <p class="guest-reach">1.2M+ followers</p>
       </div>
     </div>
 
-    <!-- PAGE 2: Tiers + Why Partner + Contact -->
-    <div class="page-2">
+    <div>
       <p class="section-label">Sponsorship</p>
       <h2 class="section-title">Tiers</h2>
     </div>
@@ -606,8 +599,8 @@
       </div>
     </div>
 
-    <!-- Contact Footer -->
-    <div class="footer-cta">
+    <!-- PAGE 3: Contact -->
+    <div class="footer-cta page-break">
       <h3>Ready to <span>Partner</span>?</h3>
       <p>Let's discuss how Curiosity Theory can amplify your brand.</p>
       <p class="email">info@curiositytheorypod.com</p>
