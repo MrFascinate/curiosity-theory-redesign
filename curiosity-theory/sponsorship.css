@@ -53,6 +53,19 @@
   margin-bottom: 36px;
 }
 
+/* --- Hero Buttons --- */
+.sp-hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.sp-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* --- About --- */
 .sp-about {
   position: relative;
