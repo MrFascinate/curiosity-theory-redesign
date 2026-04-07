@@ -1,16 +1,17 @@
 const PRINTIFY_BASE = 'https://api.printify.com/v1';
 
 export default async function handler(req, res) {
+  if (req.method && req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   // Check for token under multiple possible env var names
   const token = process.env.Printify_API_token
     || process.env.PRINTIFY_API_TOKEN
     || process.env.PRINTIFY_TOKEN;
 
   if (!token) {
-    return res.status(500).json({
-      error: 'Printify API token not configured',
-      detail: 'Set PRINTIFY_API_TOKEN in Vercel environment variables',
-    });
+    return res.status(500).json({ error: 'Merch service is not configured' });
   }
 
   const headers = { Authorization: `Bearer ${token}` };
@@ -19,12 +20,7 @@ export default async function handler(req, res) {
     // 1. Auto-discover shop ID
     const shopsRes = await fetch(`${PRINTIFY_BASE}/shops.json`, { headers });
     if (!shopsRes.ok) {
-      const body = await shopsRes.text();
-      return res.status(502).json({
-        error: 'Failed to fetch shops from Printify',
-        status: shopsRes.status,
-        detail: body,
-      });
+      return res.status(502).json({ error: 'Failed to fetch shops from Printify' });
     }
     const shops = await shopsRes.json();
     if (!shops.length) {
@@ -39,12 +35,7 @@ export default async function handler(req, res) {
       { headers }
     );
     if (!productsRes.ok) {
-      const body = await productsRes.text();
-      return res.status(502).json({
-        error: 'Failed to fetch products from Printify',
-        status: productsRes.status,
-        detail: body,
-      });
+      return res.status(502).json({ error: 'Failed to fetch products from Printify' });
     }
     const productsData = await productsRes.json();
     const allProducts = productsData.data || [];
@@ -94,6 +85,6 @@ export default async function handler(req, res) {
       totalFromApi: allProducts.length,
     });
   } catch (err) {
-    res.status(500).json({ error: 'Internal server error', detail: err.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 }

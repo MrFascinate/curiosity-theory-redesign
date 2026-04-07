@@ -113,30 +113,55 @@
       return { title, link, dateStr, thumbnail, isNew: i === 0 };
     });
 
-    container.innerHTML = episodes.map(ep => {
-      let badgeHTML = '';
-      if (ep.isNew) badgeHTML = '<span class="episode-badge">New</span>';
+    container.innerHTML = '';
+    episodes.forEach(ep => {
+      const article = document.createElement('article');
+      article.className = 'episode-card fade-up' + (ep.isNew ? ' visible' : '');
+      if (ep.isNew) article.dataset.episode = 'new';
 
-      const thumbHTML = ep.thumbnail
-        ? `<div class="episode-thumb"><img src="${ep.thumbnail}" alt="" loading="lazy"></div>`
-        : '';
+      if (ep.thumbnail) {
+        const thumbDiv = document.createElement('div');
+        thumbDiv.className = 'episode-thumb';
+        const img = document.createElement('img');
+        img.src = ep.thumbnail;
+        img.alt = ep.title;
+        img.loading = 'lazy';
+        thumbDiv.appendChild(img);
+        article.appendChild(thumbDiv);
+      }
 
-      return `
-        <article class="episode-card${ep.isNew ? ' fade-up visible' : ' fade-up'}"${ep.isNew ? ' data-episode="new"' : ''}>
-          ${thumbHTML}
-          <div class="episode-meta">
-            <span class="episode-date">${ep.dateStr}</span>
-            ${badgeHTML}
-          </div>
-          <h4 class="episode-title">${ep.title}</h4>
-          <div class="episode-actions">
-            <a href="${ep.link}" class="btn btn-play" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              Listen
-            </a>
-          </div>
-        </article>`;
-    }).join('');
+      const meta = document.createElement('div');
+      meta.className = 'episode-meta';
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'episode-date';
+      dateSpan.textContent = ep.dateStr;
+      meta.appendChild(dateSpan);
+      if (ep.isNew) {
+        const badge = document.createElement('span');
+        badge.className = 'episode-badge';
+        badge.textContent = 'New';
+        meta.appendChild(badge);
+      }
+      article.appendChild(meta);
+
+      const title = document.createElement('h4');
+      title.className = 'episode-title';
+      title.textContent = ep.title;
+      article.appendChild(title);
+
+      const actions = document.createElement('div');
+      actions.className = 'episode-actions';
+      const link = document.createElement('a');
+      link.href = ep.link;
+      link.className = 'btn btn-play';
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Listen';
+      actions.appendChild(link);
+      article.appendChild(actions);
+
+      container.appendChild(article);
+    });
 
     // Re-run scroll reveal on new cards
     initScrollReveal();
@@ -224,33 +249,50 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       ctaContainer.style.display = '';
     }
 
-    grid.innerHTML = products.map(product => {
+    grid.innerHTML = '';
+    products.forEach(product => {
       const priceText = product.hasVariants
         ? `from $${product.price.toFixed(2)}`
         : `$${product.price.toFixed(2)}`;
-
       const btnText = product.hasVariants ? 'View Options' : 'Add to Cart';
-
-      // Link to the product's external Pop-Up Store page, or fall back to shop URL
       const productUrl = product.externalUrl
         || (data.shop && data.shop.url ? data.shop.url : 'https://curiosity-theory-merch.printify.me/');
 
-      const imgHTML = product.image
-        ? `<img src="${product.image}" alt="${product.title}" loading="lazy">`
-        : '';
+      const card = document.createElement('div');
+      card.className = 'merch-card fade-up';
 
-      return `
-        <div class="merch-card fade-up">
-          <div class="merch-image">
-            ${imgHTML}
-          </div>
-          <div class="merch-info">
-            <h5 class="merch-name">${product.title}</h5>
-            <p class="merch-price">${priceText}</p>
-            <a href="${productUrl}" class="merch-btn" target="_blank" rel="noopener">${btnText}</a>
-          </div>
-        </div>`;
-    }).join('');
+      const imageDiv = document.createElement('div');
+      imageDiv.className = 'merch-image';
+      if (product.image) {
+        const img = document.createElement('img');
+        img.src = product.image;
+        img.alt = product.title;
+        img.loading = 'lazy';
+        imageDiv.appendChild(img);
+      }
+      card.appendChild(imageDiv);
+
+      const info = document.createElement('div');
+      info.className = 'merch-info';
+      const name = document.createElement('h5');
+      name.className = 'merch-name';
+      name.textContent = product.title;
+      info.appendChild(name);
+      const price = document.createElement('p');
+      price.className = 'merch-price';
+      price.textContent = priceText;
+      info.appendChild(price);
+      const btn = document.createElement('a');
+      btn.href = productUrl;
+      btn.className = 'merch-btn';
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+      btn.textContent = btnText;
+      info.appendChild(btn);
+      card.appendChild(info);
+
+      grid.appendChild(card);
+    });
 
     // Re-run scroll reveal on new cards
     initScrollReveal();
@@ -258,7 +300,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     grid.innerHTML = `
       <div class="merch-error">
         <p>Couldn't load merch right now.</p>
-        <p style="font-size:0.75rem;color:#666;margin-top:8px;">${err.message}</p>
         <a href="https://curiosity-theory-merch.printify.me/" class="btn btn-outline" target="_blank" rel="noopener">
           Shop on curiositytheorypod.com
         </a>
